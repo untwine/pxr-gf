@@ -90,8 +90,8 @@ wrapCamera()
 
     scope s(c);
 
-    TfPyWrapEnum<GfCamera::Projection>();
-    TfPyWrapEnum<GfCamera::FOVDirection>();
+    TfPyWrapEnum<GfCamera::Projection>("Camera.Projection");
+    TfPyWrapEnum<GfCamera::FOVDirection>("Camera.FOVDirection");
 
     c   .def(init<const This &>())
         .def(init<const GfMatrix4d &, GfCamera::Projection,

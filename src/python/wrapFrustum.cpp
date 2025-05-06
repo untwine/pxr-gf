@@ -246,5 +246,5 @@ void wrapFrustum()
         .def("__hash__", __hash__)
         ;
 
-    TfPyWrapEnum<This::ProjectionType>();
+    TfPyWrapEnum<This::ProjectionType>("Frustum.ProjectionType");
 }

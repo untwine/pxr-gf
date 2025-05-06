@@ -8,8 +8,8 @@
 #include <pxr/gf/color.h>
 #include <pxr/gf/colorSpace.h>
 #include <pxr/tf/diagnostic.h>
-#include "../nc/nanocolor.h"
-#include "../colorSpace_data.h"
+#include <pxr/gf/nc/nanocolor.h>
+#include <pxr/gf/colorSpace_data.h>
 
 using namespace pxr;
 
