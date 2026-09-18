@@ -53,6 +53,7 @@ jobs:
           --build=missing
 
       - name: Diagnose extension module DLL imports
+        if: always()
         shell: pwsh
         run: |
           pip install pefile
