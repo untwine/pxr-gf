@@ -52,5 +52,36 @@ jobs:
           -c tools.cmake.cmaketoolchain:generator="Visual Studio 18 2026"
           --build=missing
 
+      - name: Diagnose extension module DLL imports
+        shell: pwsh
+        run: |
+          pip install pefile
+          @'
+          import pefile, glob, os
+
+          patterns = [
+              "build/**/_tf.pyd", "build/**/_gf.pyd",
+              "build/**/PxrTf.dll", "build/**/PxrGf.dll",
+              os.path.expanduser("~/.conan2/p/**/_tf.pyd"),
+              os.path.expanduser("~/.conan2/p/**/PxrTf.dll"),
+              os.path.expanduser("~/.conan2/p/**/PxrArch.dll"),
+              os.path.expanduser("~/.conan2/p/**/PxrBoostPython.dll"),
+              os.path.expanduser("~/.conan2/p/**/tbb*.dll"),
+          ]
+          seen = set()
+          for pattern in patterns:
+              for f in glob.glob(pattern, recursive=True):
+                  if f in seen:
+                      continue
+                  seen.add(f)
+                  print("===", f, "===")
+                  try:
+                      pe = pefile.PE(f)
+                      for entry in pe.DIRECTORY_ENTRY_IMPORT:
+                          print("  imports:", entry.dll.decode())
+                  except Exception as e:
+                      print("  ERROR:", e)
+          '@ | python -
+
       - name: Test
         run: ctest --preset conan-release -VV -j4 --timeout 3600
